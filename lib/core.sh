@@ -21,38 +21,35 @@ declare -A keycode_map=(
 )
 
 switch_to_target_desktop() {
-    # 每次跳桌面前，先检测当前是否在vscode，用来记录在最后的vscode的桌面的位置
-    source "$SPACEHOPPER_HOME/lib/vscode_tracker.sh"
-
     local target_desktop="$1"
-    local sleep_duration="${2:-0.001}"  # 默认睡眠时间为0.001秒
+
+    # 直接使用 yabai 查询当前空间（最快）
     local current_space=$(yabai -m query --spaces --space | jq -r ".index")
-    # 等待指定时间
-    sleep "$sleep_duration"
 
-    if [ -n "$current_space" ]; then
-        if [ "$current_space" -ne "$target_desktop" ]; then
-            echo "Debug: Not on target space $target_desktop, saving current space and switching to space $target_desktop."
-            echo $current_space > /tmp/last_space
-
-            # 使用 yabai 原生命令切换桌面（更可靠）
-            yabai -m space --focus "$target_desktop" 2>/dev/null
-
-            echo "Debug: Switched to space $target_desktop."
-        else
-            if [ -f /tmp/last_space ]; then
-                previous_space=$(cat /tmp/last_space)
-                echo "Debug: Previous space recorded as $previous_space."
-
-                # 使用 yabai 原生命令切换桌面（更可靠）
-                yabai -m space --focus "$previous_space" 2>/dev/null
-            else
-                echo "Debug: No previous space recorded."
-            fi
-        fi
-    else
+    if [ -z "$current_space" ]; then
         echo "Debug: Failed to get current space."
+        return 1
+    fi
+
+    if [ "$current_space" -ne "$target_desktop" ]; then
+        # 切换到目标桌面
+        echo "Debug: Switching from space $current_space to space $target_desktop."
+
+        # ✅ 关键优化：在离开当前桌面前，如果当前是 VSCode 桌面，先记录
+        if [[ "$current_space" =~ ^(5|6|7|11|12|13)$ ]]; then
+            source "$SPACEHOPPER_HOME/lib/vscode_tracker.sh" 2>/dev/null
+        fi
+
+        echo "$current_space" > /tmp/last_space
+        yabai -m space --focus "$target_desktop" 2>/dev/null
+    else
+        # 切换回之前的桌面
+        if [ -f /tmp/last_space ]; then
+            local previous_space=$(cat /tmp/last_space)
+            echo "Debug: Switching back to space $previous_space."
+            yabai -m space --focus "$previous_space" 2>/dev/null
+        else
+            echo "Debug: No previous space recorded."
+        fi
     fi
 }
-
-     
