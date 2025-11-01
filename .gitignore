@@ -1,0 +1,191 @@
+
+__pycache__/
+.AppleDouble
+.cache
+.claude/
+.claude# OS generated files #
+.DS_Store
+.env
+.env.development.local
+.env.local
+.env.production.local
+.env.test.local
+.gradle/
+.idea/
+.LSOverride
+.nfs*
+.rspec
+.sass-cache
+.venv/
+.vscode/
+*.7z
+*.acn
+*.acr
+*.alg
+*.aps
+*.aux
+*.backup
+*.bak
+*.bbl
+*.bcf
+*.blg
+*.brf
+*.cache
+*.cb
+*.cb2
+*.cbp
+*.class
+*.classpath
+*.cmake
+*.com
+*.cproject
+*.db
+*.dll
+*.dsp
+*.dsw
+*.dSYM/
+*.dvi
+*.dylib
+*.ear
+*.elf
+*.end
+*.env
+*.exe
+*.exp
+*.fdb_latexmk
+*.fff
+*.fls
+*.gch
+*.gem
+*.glg
+*.glo
+*.gls
+*.gz
+*.hprof
+*.idb
+*.ide
+*.idx
+*.ilk
+*.iml
+*.ist
+*.iws
+*.jar
+*.launch
+*.lib
+*.loa
+*.lock
+*.lof
+*.log
+*.lol
+*.lot
+*.mcp
+*.ncb
+*.o
+*.obj
+*.opensdf
+*.orig
+*.out
+*.patch
+*.pch
+*.pdb
+*.pdf
+*.pdfsync
+*.pid
+*.pjt
+*.project
+*.py[cod]
+*.pyc
+*.pyd
+*.pydevproject
+*.pyo
+*.rar
+*.rbc
+*.rej
+*.rlib
+*.rsp
+*.run.xml
+*.sln
+*.so
+*.spec
+*.sql
+*.sqlite
+*.sqlite3
+*.stackdump
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.swn
+*.swo
+*.swp
+*.synctex
+*.synctex.gz
+*.tar.gz
+*.temp
+*.test
+*.thm
+*.tlog
+*.tm_properties
+*.tmp
+*.tmproj
+*.toc
+*.user
+*.vs
+*.war
+*.xdv
+*.yarn-cache/
+*.zip
+**/*.log
+*~
+/.tlx
+/log/
+/target/
+/tmp
+# C/C++ #
+# Claude Code #
+# Compiled source #
+# Environment files #
+# Go #
+# IDEs and Editors #
+# Java #
+# LaTeX #
+# Linux #
+# Logs and databases #
+# macOS #
+# Node.js #
+# PHP #
+# Python #
+# Ruby #
+# Rust #
+# Temporary files #
+# TeXShop
+# Windows #
+######
+#######
+########
+#########
+##########
+###########
+############
+###############
+###################
+####################
+#####################
+######################
+$RECYCLE.BIN/
+build/
+CMakeLists.txt.user
+Desktop.ini
+ehthumbs.db
+env/
+ENV/
+instance/
+node_modules/
+npm-debug.log*
+out/
+target/
+Thumbs.db
+vendor/
+vendor/bundle
+venv/
+yarn-debug.log*
+yarn-error.log*

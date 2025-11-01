@@ -1,0 +1,54 @@
+# SpaceHopper SKHD 配置文件
+# 请确保你正在修改的是 ~/.skhdrc 文件
+# 本文件是参考模板，位于 SpaceHopper/configs/skhd/skhdrc
+
+
+ctrl + alt + cmd - r : zsh -i -c "yabai --restart-service"
+ctrl + alt + cmd - s : zsh -i -c "switch_yabai_config"
+ctrl + alt + cmd - a : zsh -i -c "reconnect_ap"
+ctrl + alt + cmd - t : open -a Terminal
+
+# 保存当前桌面到文件
+alt - space : zsh "/Users/limo/Documents/GithubRepo/SpaceHopper/bin/space_jump.sh"
+
+# 右侧三个按键
+# 切换到music页面 使用格式 {KC_LCTL, KC_X}
+ctrl - x : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_music.sh
+# 切换到log页面，也就是Chrome页面 使用格式 {KC_LCTL, KC_L}
+ctrl - l : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_log.sh
+# 切换到chrome页面 使用格式 {KC_LCTL, KC_E}
+ctrl - e : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_chrome.sh
+# 切换到PPT页面 使用格式 {KC_LCTL, KC_P}
+ctrl - p : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_ppt.sh
+# 切换到vscode页面 使用格式 {KC_LCTL, KC_V}
+ctrl - v : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_vscode.sh
+# restart chatgpt 使用格式 {KC_LCTL, KC_G}
+ctrl - g : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/restart_chatgpt.sh
+
+# 重新加载windows alt就是对应macbook系统的option键
+ctrl + alt - o : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/organize_windows.sh
+# 切换到outlook页面 使用格式 {KC_LCTL, KC_O}
+ctrl - o : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_outlook.sh
+
+
+# 切换到Home界面就是聊天的界面 使用格式 {KC_LCTL, KC_K}
+ctrl - k : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_chat.sh
+
+# 切换到terminal界面 使用格式 {KC_LCTL, KC_T}
+ctrl - t : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_terminal.sh
+
+# Ctrl + N 键，使用格式 {KC_LCTL, KC_N}
+ctrl - n : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/lib/mouse_automation_record.sh
+
+# Ctrl + M 键，使用格式 {KC_LCTL, KC_M}
+ctrl - m : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/lib/mouse_automation_send.sh
+
+# Option + 上方向键触发翻译脚本
+alt - up : /Users/limo/miniconda3/envs/Translator/bin/python /Users/limo/Documents/GithubRepo/SpaceHopper/tools/translator.py
+
+
+# 用 /bin/sh -c（不会加载登录配置），整条命令基本瞬发
+f18 : /bin/sh -c '/opt/homebrew/bin/im-select | grep -q "com.apple.keylayout.ABC" && /opt/homebrew/bin/im-select com.apple.inputmethod.SCIM.ITABC || /opt/homebrew/bin/im-select com.apple.keylayout.ABC'
+
+# debug skhdrc
+# ctrl - d : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/debug.sh >> /tmp/spacehopper_debug.log 2>&1

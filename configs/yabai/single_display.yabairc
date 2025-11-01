@@ -1,0 +1,99 @@
+# ~/.yabairc
+# 配置yabai基础设置
+
+# load scriping addition module
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa 
+
+# 设置为浮动模式
+yabai -m config layout float
+yabai -m space 2 --layout float
+
+# Space 3------浏览器
+yabai -m space 3 --layout float
+
+# Space 4------自由布局与文献整理PPT
+yabai -m space 4 --layout float
+
+# Space 5------Local IDE
+yabai -m space 5 --layout stack
+# Space 6------Moonshot DSW IDE
+yabai -m space 6 --layout stack
+# Space 7------PJLAB-Cluster IDE
+yabai -m space 7 --layout stack
+
+# Space 9------邮件  
+yabai -m space 9 --layout bsp
+
+# 大坑就是不要用vscode自带的ctrl+/来在这个文件中注释，会导致yabai无法读取配置文件
+# 使用事件监听和规则实现窗口管理
+# 如果添加了display参数，但是其实没有对应的显示器，会导致yabai跳过对应那行的配置，所以不要添加display参数
+
+# Space 1------通讯软件
+yabai -m rule --add app="QQ" space=1
+yabai -m rule --add app="WeChat" space=1
+yabai -m rule --add app="Feishu" space=1
+yabai -m rule --add app="WeCom" space=1
+yabai -m rule --add app="Discord" space=1
+yabai -m rule --add app='Calendar' title="Calendar" space=1
+yabai -m rule --add app="Activity Monitor" space=1
+
+# Space 2------ChatGPT
+yabai -m rule --add app='ChatGPT' space=2
+# 其他ai助手通过safari打开也放在和ChatGPT一样的space
+yabai -m rule --add app='Safari' space=2
+yabai -m rule --add app='智谱清言' space=2
+
+# Space 3------浏览器（包含飞书云文档）
+yabai -m rule --add app='Google Chrome' space=3
+
+# Space 4------自由布局与文献整理PPT
+yabai -m rule --add app='Microsoft PowerPoint' space=4
+yabai -m rule --add app='Acrobat' space=4
+yabai -m rule --add app='Books' space=4
+yabai -m rule --add app='Goodnotes' space=4
+yabai -m rule --add app='Preview' title=".*pdf.*" space=4
+yabai -m rule --add app='PDF Expert' space=4
+yabai -m rule --add app='Zotero' space=4
+# yabai -m rule --add app='AnyOtherApp' space=4  # 允许放置其他应用
+
+# Space 5------Local IDE
+yabai -m rule --add app='Code' title=".*" space=5
+yabai -m rule --add app='Cursor' title=".*" space=5
+
+# Space 6------Moonshot DSW IDE
+yabai -m rule --add app='Code' title=".*[mM][23].*" space=6
+yabai -m rule --add app='Cursor' title=".*[mM][23].*" space=6
+yabai -m rule --add app='Cursor' title=".*[kK][1].*" space=6
+
+# Space 7------PJLAB-Cluster IDE
+yabai -m rule --add app='Code' title=".*Cluster.*" space=7
+yabai -m rule --add app='Cursor' title=".*Cluster.*" space=7
+yabai -m rule --add app='Code' title=".*volcano.*" space=7
+yabai -m rule --add app='Cursor' title=".*volcano.*" space=7
+yabai -m rule --add app='Cursor' title=".*[bB][0].*" space=7
+
+
+# Space 8------音乐
+yabai -m rule --add app="QQ音乐" space=8
+yabai -m rule --add app="汽水音乐" space=8
+yabai -m rule --add app="NetEaseMusic" space=8
+
+# Space 9------邮件
+yabai -m rule --add app="Microsoft Outlook" space=9
+
+# Space 10------其他
+yabai -m rule --add app="Clash for Windows" space=10
+yabai -m rule --add app="ToDesk" space=10
+yabai -m rule --add app="Appium Inspector" space=10
+yabai -m rule --add app="Logi Options+" space=10
+yabai -m rule --add app="Docker Desktop" space=10
+yabai -m rule --add app="Messages" space=10
+yabai -m rule --add app="vncviewer" space=10
+yabai -m rule --add app="VNC Viewer" space=10
+yabai -m rule --add app="learnX" space=10
+yabai -m rule --add app="Longshot" space=10
+
+yabai -m rule --apply
+# 如果您希望在每次启动 yabai 时自动重新应用规则，可以在 .yabairc 配置文件的末尾添加上述命令。
+# 这样，每次启动 yabai 时，都会自动重新应用所有规则到当前打开的窗口。

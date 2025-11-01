@@ -1,0 +1,121 @@
+# ~/.yabairc
+# 配置yabai基础设置
+# 三屏模式：主屏幕10个屏幕，副屏幕5个屏幕（11-16）
+# 踩坑，一定不要用;  yabai -m rule --add app='ChatGPT' space=3 这种方式添加注释规则，会导致yabai无法读取配置文件
+
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+# load scriping addition module
+sudo yabai --load-sa 
+
+# 设置为浮动模式
+yabai -m config layout float
+yabai -m space 2 --layout stack
+yabai -m space 3 --layout stack
+
+# Space 4------Notes
+yabai -m space 4 --layout stack
+
+# Space 5------文献整理PPT
+yabai -m space 5 --layout stack
+
+# Space 6------邮件
+yabai -m space 6 --layout stack
+
+# Space 7------音乐
+yabai -m space 7 --layout stack
+
+# Space 8------其他
+yabai -m space 8 --layout stack
+
+# Space 9------浏览器
+yabai -m space 9 --layout stack
+
+# Space 10------ChatGPT
+yabai -m space 10 --layout stack
+
+# Space 11------Local IDE
+yabai -m space 11 --layout stack
+
+# Space 12------Moonshot DSW IDE
+yabai -m space 12 --layout stack
+
+# Space 13------PJLAB-Cluster IDE
+yabai -m space 13 --layout stack
+
+# 大坑就是不要用vscode自带的ctrl+/来在这个文件中注释，会导致yabai无法读取配置文件
+# 使用事件监听和规则实现窗口管理
+# 如果添加了display参数，但是其实没有对应的显示器，会导致yabai跳过对应那行的配置，所以不要添加display参数
+
+# Space 1------通讯软件
+yabai -m rule --add app="QQ" space=1
+yabai -m rule --add app="WeChat" space=1
+yabai -m rule --add app="Feishu" space=1
+yabai -m rule --add app="WeCom" space=1
+yabai -m rule --add app="Discord" space=1
+yabai -m rule --add app='Calendar' title="Calendar" space=1
+yabai -m rule --add app="Activity Monitor" space=1
+
+# Space 2------空桌面，备用
+
+# Space 3------空桌面，备用
+
+# Space 4------Notes
+yabai -m rule --add app='Notes' space=4
+
+# Space 5------文献整理PPT
+yabai -m rule --add app='Microsoft PowerPoint' space=5
+yabai -m rule --add app='Acrobat' space=5
+yabai -m rule --add app='Books' space=5
+yabai -m rule --add app='Goodnotes' space=5
+yabai -m rule --add app='Preview' title=".*pdf.*" space=5
+
+# Space 6------邮件
+yabai -m rule --add app="Microsoft Outlook" space=6
+
+# Space 7------音乐
+yabai -m rule --add app="QQ音乐" space=7
+yabai -m rule --add app="汽水音乐" space=7
+yabai -m rule --add app="NetEaseMusic" space=7
+
+# Space 8------其他
+yabai -m rule --add app="Clash for Windows" space=8
+yabai -m rule --add app="ToDesk" space=8
+yabai -m rule --add app="Appium Inspector" space=8
+yabai -m rule --add app="Logi Options+" space=8
+yabai -m rule --add app="Docker Desktop" space=8
+yabai -m rule --add app="Messages" space=8
+yabai -m rule --add app="learnX" space=8
+yabai -m rule --add app="vncviewer" space=8
+yabai -m rule --add app="VNC Viewer" space=8
+yabai -m rule --add app="Longshot" space=8
+
+# Space 9------浏览器 & PDF Expert（包含飞书云文档）
+yabai -m rule --add app="Google Chrome" space=9
+yabai -m rule --add app="PDF Expert" space=9
+
+# Space 10------ChatGPT
+yabai -m rule --add app='ChatGPT' space=10
+yabai -m rule --add app='Safari' space=10
+yabai -m rule --add app='智谱清言' space=10
+
+# Space 11------Local IDE
+yabai -m rule --add app='Code' title=".*" space=11
+yabai -m rule --add app='Cursor' title=".*" space=11
+
+# Space 12------Moonshot DSW IDE & PETPA Project
+yabai -m rule --add app='Code' title=".*[mM][23].*" space=12
+yabai -m rule --add app='Cursor' title=".*[mM][23].*" space=12
+yabai -m rule --add app='Code' title=".*PETPA.*" space=12
+yabai -m rule --add app='Cursor' title=".*PETPA.*" space=12
+yabai -m rule --add app='Cursor' title=".*[kK][1].*" space=12
+
+# Space 13------PJLAB-Cluster IDE & volcano cloud
+yabai -m rule --add app='Code' title=".*Cluster.*" space=13
+yabai -m rule --add app='Cursor' title=".*Cluster.*" space=13
+yabai -m rule --add app='Code' title=".*volcano.*" space=13
+yabai -m rule --add app='Cursor' title=".*volcano.*" space=13
+yabai -m rule --add app='Cursor' title=".*[bB][0].*" space=13
+
+yabai -m rule --apply
+# 如果您希望在每次启动 yabai 时自动重新应用规则，可以在 .yabairc 配置文件的末尾添加上述命令。
+# 这样，每次启动 yabai 时，都会自动重新应用所有规则到当前打开的窗口。
