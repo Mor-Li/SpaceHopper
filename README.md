@@ -1,5 +1,7 @@
 # SpaceHopper
 
+![SpaceHopper Hero](assets/images/hero.png)
+
 [English](#english) | [中文](#中文)
 
 ---
@@ -10,10 +12,10 @@
 
 ### Features
 
-- **快速桌面切换**: Jump between virtual desktops with a single hotkey
-- **应用快捷键**: One-key shortcuts to specific applications (ChatGPT, VSCode, Chrome, etc.)
-- **多显示器支持**: Automatic configuration switching based on connected displays
-- **智能窗口管理**: Automatic window routing to designated spaces
+- **Fast Desktop Switching**: Jump between virtual desktops with a single hotkey
+- **Application Shortcuts**: One-key shortcuts to specific applications (ChatGPT, VSCode, Chrome, etc.)
+- **Multi-Display Support**: Automatic configuration switching based on connected displays
+- **Intelligent Window Management**: Automatic window routing to designated spaces
 
 ### Project Structure
 
@@ -153,8 +155,8 @@ yabai --restart-service
 ```
 
 #### Desktop switching is slow or fails
-- This is a known limitation of AppleScript. The scripts include a 0.2s delay to ensure the hotkey is released before executing the switch.
-- For faster switching on triple displays, the scripts use `yabai -m space --focus` as the primary method.
+- SpaceHopper uses yabai's native commands for instant switching (~30ms)
+- For best performance, ensure yabai is running: `brew services start yabai`
 
 ### Documentation
 
@@ -314,8 +316,8 @@ yabai --restart-service
 ```
 
 #### 桌面切换缓慢或失败
-- 这是 AppleScript 的已知限制。脚本包含 0.2 秒延迟以确保快捷键释放后再执行切换。
-- 对于三显示器快速切换，脚本优先使用 `yabai -m space --focus` 方法。
+- SpaceHopper 使用 yabai 原生命令实现即时切换（约 30ms）
+- 为获得最佳性能，请确保 yabai 正在运行：`brew services start yabai`
 
 ### 文档
 
