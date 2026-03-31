@@ -36,7 +36,7 @@ switch_to_target_desktop() {
         echo "Debug: Switching from space $current_space to space $target_desktop."
 
         # ✅ 关键优化：在离开当前桌面前，如果当前是 VSCode 桌面，先记录
-        if [[ "$current_space" =~ ^(5|6|7|11|12|13)$ ]]; then
+        if [[ "$current_space" =~ ^(5|6|7|8|10|11|12|13)$ ]]; then
             source "$SPACEHOPPER_HOME/lib/vscode_tracker.sh" 2>/dev/null
         fi
 
