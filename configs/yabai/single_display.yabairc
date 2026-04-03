@@ -7,7 +7,7 @@ sudo yabai --load-sa
 
 # 设置为浮动模式
 yabai -m config layout float
-yabai -m space 2 --layout float
+yabai -m space 2 --layout stack
 
 # Space 3------浏览器
 yabai -m space 3 --layout float
