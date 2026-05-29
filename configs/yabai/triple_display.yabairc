@@ -34,13 +34,19 @@ yabai -m space 9 --layout stack
 yabai -m space 10 --layout stack
 
 # Space 11------Local IDE
-yabai -m space 11 --layout stack
+yabai -m space 11 --layout bsp
+yabai -m config --space 11 split_ratio 0.6
+yabai -m config --space 11 split_type vertical
 
 # Space 12------Moonshot DSW IDE
-yabai -m space 12 --layout stack
+yabai -m space 12 --layout bsp
+yabai -m config --space 12 split_ratio 0.6
+yabai -m config --space 12 split_type vertical
 
 # Space 13------PJLAB-Cluster IDE
-yabai -m space 13 --layout stack
+yabai -m space 13 --layout bsp
+yabai -m config --space 13 split_ratio 0.6
+yabai -m config --space 13 split_type vertical
 
 # 大坑就是不要用vscode自带的ctrl+/来在这个文件中注释，会导致yabai无法读取配置文件
 # 使用事件监听和规则实现窗口管理
@@ -97,6 +103,7 @@ yabai -m rule --add app="PDF Expert" space=9
 yabai -m rule --add app='ChatGPT' space=10
 yabai -m rule --add app='Safari' space=10
 yabai -m rule --add app='智谱清言' space=10
+yabai -m rule --add app='Yuanbao' space=10
 
 # Space 11------Local IDE
 yabai -m rule --add app='Code' title=".*" space=11
