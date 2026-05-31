@@ -42,7 +42,6 @@ yabai -m rule --add app="Feishu" space=1
 yabai -m rule --add app="WeCom" space=1
 yabai -m rule --add app="Discord" space=1
 yabai -m rule --add app='Calendar' title="Calendar" space=1
-yabai -m rule --add app="Activity Monitor" space=1
 
 # Space 2------ChatGPT
 yabai -m rule --add app='ChatGPT' space=2
@@ -101,6 +100,8 @@ yabai -m rule --add app="vncviewer" space=10
 yabai -m rule --add app="VNC Viewer" space=10
 yabai -m rule --add app="learnX" space=10
 yabai -m rule --add app="Longshot" space=10
+yabai -m rule --add app="Activity Monitor" space=10
+yabai -m rule --add app="Screen Sharing" space=10
 
 yabai -m rule --apply
 # 如果您希望在每次启动 yabai 时自动重新应用规则，可以在 .yabairc 配置文件的末尾添加上述命令。
