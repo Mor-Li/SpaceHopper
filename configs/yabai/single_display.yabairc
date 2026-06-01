@@ -16,17 +16,11 @@ yabai -m space 3 --layout float
 yabai -m space 4 --layout float
 
 # Space 5------Local IDE
-yabai -m space 5 --layout bsp
-yabai -m config --space 5 split_ratio 0.6
-yabai -m config --space 5 split_type vertical
+yabai -m space 5 --layout stack
 # Space 6------Moonshot DSW IDE
-yabai -m space 6 --layout bsp
-yabai -m config --space 6 split_ratio 0.6
-yabai -m config --space 6 split_type vertical
+yabai -m space 6 --layout stack
 # Space 7------PJLAB-Cluster IDE
-yabai -m space 7 --layout bsp
-yabai -m config --space 7 split_ratio 0.6
-yabai -m config --space 7 split_type vertical
+yabai -m space 7 --layout stack
 
 # Space 9------邮件  
 yabai -m space 9 --layout bsp
