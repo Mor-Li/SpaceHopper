@@ -61,10 +61,10 @@ Then do these **one-time** steps (no SIP, just toggles):
 | Hotkey | Desktop | Example app |
 |---|---|---|
 | `Ctrl+K` | 1 | Chat (Feishu) |
-| `Ctrl+V` | 2 | Editor (Cursor) |
-| `Ctrl+E` | 3 | Browser (Chrome) |
+| `Ctrl+E` | 2 | Browser (Chrome) |
+| `Ctrl+V` | 3 | Editor (Cursor) |
 | `Ctrl+X` | 4 | Music |
-| `Alt+Space` | ↔ 2 | quick toggle to editor |
+| `Alt+Space` | ↔ 3 | quick toggle to editor |
 
 Each key toggles: press once to jump, press again to go back.
 
@@ -137,10 +137,10 @@ skhd --start-service
 | 快捷键 | 桌面 | 示例应用 |
 |---|---|---|
 | `Ctrl+K` | 1 | 聊天（飞书） |
-| `Ctrl+V` | 2 | 编辑器（Cursor） |
-| `Ctrl+E` | 3 | 浏览器（Chrome） |
+| `Ctrl+E` | 2 | 浏览器（Chrome） |
+| `Ctrl+V` | 3 | 编辑器（Cursor） |
 | `Ctrl+X` | 4 | 音乐 |
-| `Alt+Space` | ↔ 2 | 快速 toggle 到编辑器 |
+| `Alt+Space` | ↔ 3 | 快速 toggle 到编辑器 |
 
 每个键都带 toggle：按一次跳过去，再按一次回来。
 

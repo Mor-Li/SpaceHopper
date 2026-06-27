@@ -7,7 +7,7 @@
 #   - 若仓库不在 $HOME/Documents/GithubRepo/SpaceHopper，请改下面的路径。
 #
 # 桌面布局（示例）：
-#   桌面 1 = 聊天(飞书)   桌面 2 = 编辑器(Cursor)   桌面 3 = 浏览器(Chrome)   桌面 4 = 音乐
+#   桌面 1 = 聊天(飞书)   桌面 2 = 浏览器(Chrome)   桌面 3 = 编辑器(Cursor)   桌面 4 = 音乐
 #
 # 前提（一次性，均不关 SIP）：
 #   1) 系统设置 → 键盘 → 键盘快捷键 → 调度中心：勾选「切换到桌面 1/2/3/4」(Ctrl+数字)
@@ -19,5 +19,5 @@ ctrl - v : zsh "$HOME/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_
 ctrl - e : zsh "$HOME/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_chrome.sh"
 ctrl - x : zsh "$HOME/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_music.sh"
 
-# Alt + Space -> 主切换器（当前桌面 <-> 桌面 2 来回 toggle）
+# Alt + Space -> 主切换器（当前桌面 <-> 桌面 3/Cursor 来回 toggle）
 alt - space : zsh "$HOME/Documents/GithubRepo/SpaceHopper/bin/space_jump.sh"
