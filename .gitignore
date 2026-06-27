@@ -1,4 +1,8 @@
 
+# SpaceHopper 编译产物（用 ./build.sh 生成，不进版本库）
+bin/current-space
+bin/switch-space
+
 __pycache__/
 .AppleDouble
 .cache

@@ -1,4 +1,4 @@
-# SpaceHopper
+# SpaceHopper (lite)
 
 ![SpaceHopper Hero](assets/images/hero.png)
 
@@ -8,336 +8,154 @@
 
 ## English
 
-**SpaceHopper** is a comprehensive macOS productivity toolkit for managing virtual desktops and windows across multiple displays. It combines fast desktop switching with intelligent window management, allowing you to create a highly efficient workspace.
+**SpaceHopper (lite)** is a minimal macOS virtual-desktop switcher with **state-tracking toggle**, built **without yabai** and **without disabling SIP**.
 
-### Features
+- Jump to a specific desktop with one hotkey (e.g. `Ctrl+K` → Desktop 1).
+- Press the same hotkey again to **toggle back** to the previous desktop.
+- Works with trackpad swipes / manual switches — the current desktop is queried live, so the toggle never gets out of sync.
 
-- **Fast Desktop Switching**: Jump between virtual desktops with a single hotkey
-- **Application Shortcuts**: One-key shortcuts to specific applications (ChatGPT, VSCode, Chrome, etc.)
-- **Multi-Display Support**: Automatic configuration switching based on connected displays
-- **Intelligent Window Management**: Automatic window routing to designated spaces
+### Why "lite"?
 
-### Project Structure
+The original SpaceHopper relied on [yabai](https://github.com/koekeishiya/yabai)'s `space --focus`, which **requires partially disabling SIP** (recovery-mode `csrutil`, scripting addition injected into Dock). On locked-down machines that isn't an option.
 
-```
-SpaceHopper/
-├── bin/                      # Executable scripts
-│   ├── space_jump.sh        # Main desktop switcher (Alt+Space)
-│   └── app_shortcuts/       # App-specific jump scripts (Ctrl+K, Ctrl+V, etc.)
-├── lib/                      # Core libraries
-│   ├── core.sh              # Core functions and key mappings
-│   └── vscode_tracker.sh    # VSCode position tracking
-├── configs/                  # Configuration files
-│   ├── yabai/               # Yabai configs for different display setups
-│   └── skhd/                # SKHD hotkey configurations
-└── docs/                     # Documentation
-```
+This lite version replaces yabai with two tiny first-party mechanisms — **no SIP changes, no Dock injection**:
 
-### Prerequisites
+| Concern | yabai version | lite version |
+|---|---|---|
+| Query current desktop | `yabai -m query --spaces` | `current-space` — SkyLight **read-only** (`SLSGetActiveSpace`) |
+| Switch desktop | `yabai -m space --focus N` | `switch-space` — `CGEvent` simulates the native **"Switch to Desktop N"** shortcut |
 
-- macOS
-- [Yabai](https://github.com/koekeishiya/yabai) - Tiling window manager
-- [SKHD](https://github.com/koekeishiya/skhd) - Simple hotkey daemon
-- `jq` - JSON processor (`brew install jq`)
+Both only need the standard **Accessibility** permission.
 
-### Installation
+### Requirements
 
-1. **Install dependencies**:
-   ```bash
-   brew install yabai skhd jq
-   brew services start yabai
-   brew services start skhd
-   ```
+- macOS (tested on macOS 26 / Apple Silicon)
+- [skhd](https://github.com/koekeishiya/skhd) — hotkey daemon (`brew install koekeishiya/formulae/skhd`)
+- Xcode Command Line Tools (`swiftc`, for building the two helpers)
+- **No yabai. No SIP changes.**
 
-2. **Clone the repository**:
-   ```bash
-   cd ~/Documents/GithubRepo
-   git clone <repository-url> SpaceHopper
-   cd SpaceHopper
-   ```
+### Install
 
-3. **Configure SKHD**:
-   ```bash
-   # Backup your existing config
-   cp ~/.skhdrc ~/.skhdrc.backup
-
-   # Copy the SpaceHopper config
-   cp configs/skhd/skhdrc ~/.skhdrc
-
-   # Restart SKHD
-   brew services restart skhd
-   ```
-
-4. **Configure Yabai**:
-   ```bash
-   # Backup existing config
-   cp ~/.yabairc ~/.yabairc.backup
-
-   # Choose the appropriate config based on your display count
-   # For triple display:
-   cp configs/yabai/triple_display.yabairc ~/.yabairc
-   # For dual display:
-   # cp configs/yabai/dual_display.yabairc ~/.yabairc
-   # For single display:
-   # cp configs/yabai/single_display.yabairc ~/.yabairc
-
-   # Restart Yabai
-   brew services restart yabai
-   ```
-
-### Usage
-
-#### Desktop Switching
-
-- **Alt + Space**: Toggle between current desktop and target desktop
-  - Single/dual display: Switches to desktop 2
-  - Triple display: Switches to desktop 12
-
-#### Application Shortcuts
-
-- **Ctrl + K**: Jump to ChatGPT (desktop 1)
-- **Ctrl + V**: Jump to VSCode
-- **Ctrl + E**: Jump to Chrome
-- **Ctrl + X**: Jump to Music
-- **Ctrl + L**: Jump to Log/Chrome
-- **Ctrl + O**: Jump to Outlook
-- **Ctrl + P**: Jump to PowerPoint
-- **Ctrl + T**: Jump to Terminal
-
-#### Window Management
-
-- **Ctrl + Alt + Cmd + R**: Restart Yabai service
-
-#### Productivity Tools
-
-- **F18**: Toggle input method (ABC ⇄ Chinese)
-
-### Customization
-
-#### Modifying Desktop Targets
-
-Edit the display-specific desktop numbers in:
-- `bin/space_jump.sh` - Main switcher
-- `bin/app_shortcuts/*.sh` - Individual app shortcuts
-
-#### Adding New App Shortcuts
-
-1. Create a new script in `bin/app_shortcuts/`:
-   ```bash
-   cp bin/app_shortcuts/switch_to_chat.sh bin/app_shortcuts/switch_to_myapp.sh
-   ```
-
-2. Edit the target desktop number
-
-3. Add a hotkey binding in `~/.skhdrc`:
-   ```
-   ctrl - y : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_myapp.sh
-   ```
-
-4. Restart SKHD: `brew services restart skhd`
-
-### Troubleshooting
-
-#### SKHD not responding
 ```bash
-# Check SKHD logs
-pkill skhd
-skhd &
-# Check terminal output for errors
+git clone <your-fork> ~/Documents/GithubRepo/SpaceHopper
+cd ~/Documents/GithubRepo/SpaceHopper
+
+# 1) Build the Swift helpers
+./build.sh
+
+# 2) Install the skhd config
+mkdir -p ~/.config/skhd
+cp configs/skhd/skhdrc ~/.config/skhd/skhdrc   # edit the path inside if your clone is elsewhere
+
+# 3) Start skhd
+skhd --start-service
 ```
 
-#### Yabai windows not routing correctly
-```bash
-# Restart Yabai
-yabai --restart-service
+Then do these **one-time** steps (no SIP, just toggles):
 
-# Or use the hotkey: Ctrl + Alt + Cmd + R
-```
+1. **System Settings → Keyboard → Keyboard Shortcuts → Mission Control**: enable **"Switch to Desktop 1/2/3/4"** (default `Ctrl+1..4`). These are off by default.
+2. **System Settings → Privacy & Security → Accessibility**: add and enable `/opt/homebrew/bin/skhd`.
 
-#### Desktop switching is slow or fails
-- SpaceHopper uses yabai's native commands for instant switching (~30ms)
-- For best performance, ensure yabai is running: `brew services start yabai`
+### Default keybindings (4-desktop layout)
 
-### Documentation
+| Hotkey | Desktop | Example app |
+|---|---|---|
+| `Ctrl+K` | 1 | Chat (Feishu) |
+| `Ctrl+V` | 2 | Editor (Cursor) |
+| `Ctrl+E` | 3 | Browser (Chrome) |
+| `Ctrl+X` | 4 | Music |
+| `Alt+Space` | ↔ 2 | quick toggle to editor |
 
-- [Desktop Jumper Documentation](docs/README_desktop_jumper.md)
-- [Yabai Multi-Display Setup](docs/README_yabai.md)
-- [Yabai Configuration Guide](docs/yabairc_config.md)
-- [Space Swap Changes](docs/space_swap_changes.md)
+Each key toggles: press once to jump, press again to go back.
+
+### Customize
+
+- **Change a target desktop**: edit the number in the matching `bin/app_shortcuts/switch_to_*.sh` (`switch_to_target_desktop N`).
+- **Add a hotkey**: copy one of the scripts, set its target desktop, then add a line in `~/.config/skhd/skhdrc` and `skhd --restart-service`.
+- **Switch animation feels slow?** That's the native macOS slide. Enabling *Reduce Motion* turns it into a fast fade. Instant (no-animation) switching is only possible with yabai (SIP off), which this version intentionally avoids.
+
+### Notes / limitations
+
+- Only desktops **1–9** are reachable (native `Ctrl+number` shortcuts).
+- The toggle state is stored in `/tmp/last_space`.
+- VSCode position tracking from the original (yabai-based) is not available without yabai.
 
 ---
 
 ## 中文
 
-**SpaceHopper** 是一个综合性的 macOS 生产力工具包，用于管理多显示器环境下的虚拟桌面和窗口。它将快速桌面切换与智能窗口管理相结合，让你打造高效的工作空间。
+**SpaceHopper（lite）** 是一个极简的 macOS 虚拟桌面切换器，带**状态跟踪 toggle**，**不依赖 yabai**、**不需要关闭 SIP**。
 
-### 功能特性
+- 一个快捷键直达指定桌面（如 `Ctrl+K` → 桌面 1）。
+- 再按一次同一个键，**toggle 回到上一个桌面**。
+- 兼容三指滑动 / 手动切换——当前桌面是实时查询的，toggle 永远不会和真实位置脱节。
 
-- **快速桌面切换**: 使用单一快捷键在虚拟桌面间跳转
-- **应用快捷键**: 一键跳转到特定应用（ChatGPT、VSCode、Chrome 等）
-- **多显示器支持**: 根据连接的显示器自动切换配置
-- **智能窗口管理**: 自动将窗口路由到指定的桌面空间
+### 为什么是 "lite"？
 
-### 项目结构
+原版 SpaceHopper 用 [yabai](https://github.com/koekeishiya/yabai) 的 `space --focus` 切空间，而它**必须部分关闭 SIP**（进恢复模式跑 `csrutil`、往 Dock 注入 scripting addition）。受限的机器（如公司电脑）做不到。
 
-```
-SpaceHopper/
-├── bin/                      # 可执行脚本
-│   ├── space_jump.sh        # 主桌面切换器 (Alt+Space)
-│   └── app_shortcuts/       # 应用专属跳转脚本 (Ctrl+K, Ctrl+V 等)
-├── lib/                      # 核心库
-│   ├── core.sh              # 核心函数和键码映射
-│   └── vscode_tracker.sh    # VSCode 位置追踪
-├── configs/                  # 配置文件
-│   ├── yabai/               # 不同显示器设置的 Yabai 配置
-│   └── skhd/                # SKHD 快捷键配置
-└── docs/                     # 文档
-```
+lite 版用两个极小的系统原生机制替代 yabai，**不动 SIP、不注入 Dock**：
+
+| 需求 | yabai 版 | lite 版 |
+|---|---|---|
+| 查当前桌面 | `yabai -m query --spaces` | `current-space` —— SkyLight **只读**（`SLSGetActiveSpace`） |
+| 切桌面 | `yabai -m space --focus N` | `switch-space` —— `CGEvent` 模拟系统自带的**「切换到桌面 N」** |
+
+两者只需要标准的**「辅助功能」**权限。
 
 ### 前置要求
 
-- macOS
-- [Yabai](https://github.com/koekeishiya/yabai) - 平铺窗口管理器
-- [SKHD](https://github.com/koekeishiya/skhd) - 简单热键守护进程
-- `jq` - JSON 处理器 (`brew install jq`)
+- macOS（在 macOS 26 / Apple Silicon 上验证）
+- [skhd](https://github.com/koekeishiya/skhd) 热键守护进程（`brew install koekeishiya/formulae/skhd`）
+- Xcode Command Line Tools（`swiftc`，用于编译两个 helper）
+- **不需要 yabai，不需要改 SIP。**
 
-### 安装步骤
+### 安装
 
-1. **安装依赖**:
-   ```bash
-   brew install yabai skhd jq
-   brew services start yabai
-   brew services start skhd
-   ```
+```bash
+git clone <你的 fork> ~/Documents/GithubRepo/SpaceHopper
+cd ~/Documents/GithubRepo/SpaceHopper
 
-2. **克隆仓库**:
-   ```bash
-   cd ~/Documents/GithubRepo
-   git clone <repository-url> SpaceHopper
-   cd SpaceHopper
-   ```
+# 1) 编译两个 Swift helper
+./build.sh
 
-3. **配置 SKHD**:
-   ```bash
-   # 备份现有配置
-   cp ~/.skhdrc ~/.skhdrc.backup
+# 2) 安装 skhd 配置
+mkdir -p ~/.config/skhd
+cp configs/skhd/skhdrc ~/.config/skhd/skhdrc   # 仓库不在默认路径就改一下里面的路径
 
-   # 复制 SpaceHopper 配置
-   cp configs/skhd/skhdrc ~/.skhdrc
+# 3) 启动 skhd
+skhd --start-service
+```
 
-   # 重启 SKHD
-   brew services restart skhd
-   ```
+然后做两个**一次性**设置（都不关 SIP，点开关即可）：
 
-4. **配置 Yabai**:
-   ```bash
-   # 备份现有配置
-   cp ~/.yabairc ~/.yabairc.backup
+1. **系统设置 → 键盘 → 键盘快捷键 → 调度中心**：勾选**「切换到桌面 1/2/3/4」**（默认 `Ctrl+1~4`）。这些默认是**关**的。
+2. **系统设置 → 隐私与安全性 → 辅助功能**：添加并启用 `/opt/homebrew/bin/skhd`。
 
-   # 根据显示器数量选择合适的配置
-   # 三显示器:
-   cp configs/yabai/triple_display.yabairc ~/.yabairc
-   # 双显示器:
-   # cp configs/yabai/dual_display.yabairc ~/.yabairc
-   # 单显示器:
-   # cp configs/yabai/single_display.yabairc ~/.yabairc
+### 默认快捷键（4 桌面布局）
 
-   # 重启 Yabai
-   brew services restart yabai
-   ```
+| 快捷键 | 桌面 | 示例应用 |
+|---|---|---|
+| `Ctrl+K` | 1 | 聊天（飞书） |
+| `Ctrl+V` | 2 | 编辑器（Cursor） |
+| `Ctrl+E` | 3 | 浏览器（Chrome） |
+| `Ctrl+X` | 4 | 音乐 |
+| `Alt+Space` | ↔ 2 | 快速 toggle 到编辑器 |
 
-### 使用方法
-
-#### 桌面切换
-
-- **Alt + Space**: 在当前桌面和目标桌面间切换
-  - 单/双显示器: 切换到桌面 2
-  - 三显示器: 切换到桌面 12
-
-#### 应用快捷键
-
-- **Ctrl + K**: 跳转到 ChatGPT（桌面 1）
-- **Ctrl + V**: 跳转到 VSCode
-- **Ctrl + E**: 跳转到 Chrome
-- **Ctrl + X**: 跳转到音乐
-- **Ctrl + L**: 跳转到日志/Chrome
-- **Ctrl + O**: 跳转到 Outlook
-- **Ctrl + P**: 跳转到 PowerPoint
-- **Ctrl + T**: 跳转到终端
-
-#### 窗口管理
-
-- **Ctrl + Alt + Cmd + R**: 重启 Yabai 服务
-
-#### 生产力工具
-
-- **F18**: 切换输入法（ABC ⇄ 中文）
+每个键都带 toggle：按一次跳过去，再按一次回来。
 
 ### 自定义
 
-#### 修改目标桌面
+- **改目标桌面**：编辑对应的 `bin/app_shortcuts/switch_to_*.sh` 里的数字（`switch_to_target_desktop N`）。
+- **加快捷键**：复制一个脚本，改目标桌面号，在 `~/.config/skhd/skhdrc` 加一行，然后 `skhd --restart-service`。
+- **觉得切换动画慢？** 那是 macOS 原生横滑动画。打开「减弱动态效果」会变成快速淡出。真正的「零动画瞬移」只有 yabai（关 SIP）能做到，本版本刻意不走这条路。
 
-编辑以下文件中特定显示器的桌面编号：
-- `bin/space_jump.sh` - 主切换器
-- `bin/app_shortcuts/*.sh` - 各个应用快捷键
+### 说明 / 限制
 
-#### 添加新的应用快捷键
-
-1. 在 `bin/app_shortcuts/` 创建新脚本：
-   ```bash
-   cp bin/app_shortcuts/switch_to_chat.sh bin/app_shortcuts/switch_to_myapp.sh
-   ```
-
-2. 编辑目标桌面编号
-
-3. 在 `~/.skhdrc` 添加快捷键绑定：
-   ```
-   ctrl - y : zsh /Users/limo/Documents/GithubRepo/SpaceHopper/bin/app_shortcuts/switch_to_myapp.sh
-   ```
-
-4. 重启 SKHD: `brew services restart skhd`
-
-### 故障排除
-
-#### SKHD 无响应
-```bash
-# 查看 SKHD 日志
-pkill skhd
-skhd &
-# 检查终端输出的错误信息
-```
-
-#### Yabai 窗口路由不正确
-```bash
-# 重启 Yabai
-yabai --restart-service
-
-# 或使用快捷键: Ctrl + Alt + Cmd + R
-```
-
-#### 桌面切换缓慢或失败
-- SpaceHopper 使用 yabai 原生命令实现即时切换（约 30ms）
-- 为获得最佳性能，请确保 yabai 正在运行：`brew services start yabai`
-
-### 文档
-
-- [桌面跳转器文档](docs/README_desktop_jumper_zh-CN.md)
-- [Yabai 多显示器设置](docs/README_yabai.md)
-- [Yabai 配置指南](docs/yabairc_config.md)
-- [桌面交换变更](docs/space_swap_changes.md)
+- 只能到达桌面 **1–9**（受限于系统原生 `Ctrl+数字` 快捷键）。
+- toggle 的状态存在 `/tmp/last_space`。
+- 原版基于 yabai 的 VSCode 位置跟踪在无 yabai 下不可用。
 
 ### License
 
-MIT License
-
-### Contributing
-
-Contributions are welcome! Please feel free to submit issues or pull requests.
-
-### Author
-
-Limo Zhang
-
----
-
-**Note**: This project is specifically configured for the author's personal workflow but can be easily adapted to your needs by modifying the desktop numbers and application bindings.
+MIT
