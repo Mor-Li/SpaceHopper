@@ -4,6 +4,14 @@
 
 [English](#english) | [中文](#中文)
 
+> [!NOTE]
+> **Can't / don't want to disable SIP?** This `main` branch needs [yabai](https://github.com/koekeishiya/yabai), which requires **partially disabling SIP**. There is a **`lite` branch** — a **yabai-free, SIP-free** version that switches desktops via the native "Switch to Desktop N" shortcut + a read-only SkyLight query (with the same state-tracking toggle). On locked-down machines, use `lite`:
+> ```bash
+> git checkout lite
+> ```
+>
+> **不能/不想关闭 SIP？** 当前 `main` 分支依赖 [yabai](https://github.com/koekeishiya/yabai)，而 yabai **必须部分关闭 SIP**。我们另有一个 **`lite` 分支**：**无 yabai、无需关闭 SIP** 的轻量版，靠系统自带的「切换到桌面 N」+ SkyLight 只读查询实现切换（保留同样的状态跟踪 toggle）。受限的机器（如公司电脑）请用 `lite`：`git checkout lite`。
+
 ---
 
 ## English
