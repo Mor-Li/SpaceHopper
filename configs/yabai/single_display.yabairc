@@ -16,8 +16,14 @@ yabai -m space 3 --layout float
 yabai -m space 4 --layout float
 
 # Space 5------Local IDE
-yabai -m space 5 --layout float
+# 用 stack 而非 float：这个 space 混着 Code/Cursor/Claude 多个 app，float 会触发
+# docs/float_zorder_bug.md 记录的 z-order 卡死（点击只改键盘焦点、视觉层级不动），
+# yabai v7.1.16 至今未修
+yabai -m space 5 --layout stack
 # Space 6------Moonshot DSW IDE
+# 6/7 保持 float 图个自由：通常只有单个远程 IDE 窗口，卡死概率低；
+# 万一又卡住（点了切不过去），跑一轮 layout toggle 重置：
+#   yabai -m space 6 --layout bsp && sleep 0.3 && yabai -m space 6 --layout float
 yabai -m space 6 --layout float
 # Space 7------PJLAB-Cluster IDE
 yabai -m space 7 --layout float

@@ -24,7 +24,7 @@ else
 
     # 根据显示器数量定义默认的目标桌面编号
     if [ "$num_displays" -eq 1 ]; then
-        target_desktop=6  # 单显示器情况下的默认桌面
+        target_desktop=5  # 单显示器：Local IDE，跟 yabai 规则里 Code/Cursor 的兜底 space=5 保持一致
     elif [ "$num_displays" -eq 2 ]; then
         target_desktop=8  # 双显示器情况下的默认桌面（Local IDE）
     elif [ "$num_displays" -eq 3 ]; then
