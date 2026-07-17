@@ -34,10 +34,10 @@ yabai -m config --space 8 split_type vertical
 # Space 9------浏览器
 yabai -m space 9 --layout stack
 
-# Space 10------Moonshot DSW IDE
-yabai -m space 10 --layout bsp
-yabai -m config --space 10 split_ratio 0.6
-yabai -m config --space 10 split_type vertical
+# Space 10------Moonshot DSW IDE + ChatGPT
+# ChatGPT 常驻后用 stack：bsp 会把它跟 IDE 平铺分屏，float 会触发
+# docs/float_zorder_bug.md 的 z-order 卡死，stack 叠放正好配 Cmd+Tab
+yabai -m space 10 --layout stack
 
 # Space 11------PJLAB-Cluster IDE
 yabai -m space 11 --layout bsp
@@ -57,9 +57,7 @@ yabai -m rule --add app="Discord" space=1
 yabai -m rule --add app='Calendar' title="Calendar" space=1
 yabai -m rule --add app="Activity Monitor" space=1
 
-# Space 2------ChatGPT
-yabai -m rule --add app='ChatGPT' space=2
-# 其他ai助手通过safari打开也放在和ChatGPT一样的space
+# Space 2------AI 网页助手（ChatGPT 桌面版已挪去 Space 10，方便 Cmd+Tab 直达 IDE 区）
 yabai -m rule --add app='Safari' space=2
 yabai -m rule --add app='智谱清言' space=2
 yabai -m rule --add app='Yuanbao' space=2
@@ -103,10 +101,12 @@ yabai -m rule --add app='Cursor' title=".*" space=8
 yabai -m rule --add app="Google Chrome" space=9
 yabai -m rule --add app="PDF Expert" space=9
 
-# Space 10------Moonshot DSW IDE
+# Space 10------Moonshot DSW IDE + ChatGPT
 yabai -m rule --add app='Code' title=".*[mM][23].*" space=10
 yabai -m rule --add app='Cursor' title=".*[mM][23].*" space=10
 yabai -m rule --add app='Cursor' title=".*[kK][1].*" space=10
+# ChatGPT 固定住 Space 10，Cmd+Tab 切到它时系统自动跳过来
+yabai -m rule --add app='ChatGPT' space=10
 
 # Space 11------PJLAB-Cluster IDE
 yabai -m rule --add app='Code' title=".*Cluster.*" space=11

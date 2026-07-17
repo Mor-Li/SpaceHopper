@@ -20,12 +20,14 @@ yabai -m space 4 --layout float
 # docs/float_zorder_bug.md 记录的 z-order 卡死（点击只改键盘焦点、视觉层级不动），
 # yabai v7.1.16 至今未修
 yabai -m space 5 --layout stack
-# Space 6------Moonshot DSW IDE
-# 6/7 保持 float 图个自由：通常只有单个远程 IDE 窗口，卡死概率低；
-# 万一又卡住（点了切不过去），跑一轮 layout toggle 重置：
-#   yabai -m space 6 --layout bsp && sleep 0.3 && yabai -m space 6 --layout float
-yabai -m space 6 --layout float
+# Space 6------Moonshot DSW IDE + ChatGPT
+# ChatGPT 常驻这里后窗口不止一个，float 会触发 docs/float_zorder_bug.md 的
+# z-order 卡死（点击只改键盘焦点、视觉层级不动），所以用 stack
+yabai -m space 6 --layout stack
 # Space 7------PJLAB-Cluster IDE
+# 7 保持 float 图个自由：通常只有单个远程 IDE 窗口，卡死概率低；
+# 万一又卡住（点了切不过去），跑一轮 layout toggle 重置：
+#   yabai -m space 7 --layout bsp && sleep 0.3 && yabai -m space 7 --layout float
 yabai -m space 7 --layout float
 
 # Space 9------邮件  
@@ -43,9 +45,7 @@ yabai -m rule --add app="WeCom" space=1
 yabai -m rule --add app="Discord" space=1
 yabai -m rule --add app='Calendar' title="Calendar" space=1
 
-# Space 2------ChatGPT
-yabai -m rule --add app='ChatGPT' space=2
-# 其他ai助手通过safari打开也放在和ChatGPT一样的space
+# Space 2------AI 网页助手（ChatGPT 桌面版已挪去 Space 6，方便 Cmd+Tab 直达 IDE 区）
 yabai -m rule --add app='Safari' space=2
 yabai -m rule --add app='智谱清言' space=2
 yabai -m rule --add app='Yuanbao' space=2
@@ -72,10 +72,12 @@ yabai -m rule --add app='Cursor' title=".*" space=5
 # Claude 桌面版（AI coding 助手）跟第一个 IDE 待一起
 yabai -m rule --add app='Claude' space=5
 
-# Space 6------Moonshot DSW IDE
+# Space 6------Moonshot DSW IDE + ChatGPT
 yabai -m rule --add app='Code' title=".*[mM][23].*" space=6
 yabai -m rule --add app='Cursor' title=".*[mM][23].*" space=6
 yabai -m rule --add app='Cursor' title=".*[kK][1].*" space=6
+# ChatGPT 固定住 Space 6，Cmd+Tab 切到它时系统自动跳过来
+yabai -m rule --add app='ChatGPT' space=6
 
 # Space 7------PJLAB-Cluster IDE
 yabai -m rule --add app='Code' title=".*Cluster.*" space=7
