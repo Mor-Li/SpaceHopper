@@ -16,7 +16,7 @@ if [ "$num_displays" -eq 1 ]; then
 elif [ "$num_displays" -eq 2 ]; then
     target_desktop=9  # 针对双显示器的设定，浏览器窗口
 elif [ "$num_displays" -eq 3 ]; then
-    target_desktop=10  # 针对三显示器的设定
+    target_desktop=9  # 针对三显示器的设定，浏览器窗口（Space 10 是 AI 网页助手，别搞混）
 else
     target_desktop=3  # 针对更多显示器的设定
 fi

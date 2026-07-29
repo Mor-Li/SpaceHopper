@@ -1,52 +1,75 @@
 # ~/.yabairc
 # 配置yabai基础设置
-# 三屏模式：主屏幕10个屏幕，副屏幕5个屏幕（11-16）
+# 三屏模式：Space 1-13
+#
+# 设计原则跟 single/dual 一致：Space 的用途和 layout 照抄 single_display.yabairc，
+# 只是摊开在更多屏幕上。各 Space 与单屏的对应关系：
+#
+#   1  通讯      ← 单屏 1        8  其他       ← 单屏 10
+#   2  空桌面    （备用）        9  浏览器      ← 单屏 3
+#   3  空桌面    （备用）        10 AI 网页     ← 单屏 2
+#   4  Notes    （三屏独有）      11 本地 IDE   ← 单屏 5
+#   5  文献/终端 ← 单屏 4         12 Moonshot   ← 单屏 6
+#   6  邮件      ← 单屏 9         13 Cluster    ← 单屏 7
+#   7  音乐      ← 单屏 8
+#
+# ⚠️ 本文件只负责「哪个 app 去哪个 Space」和「每个 Space 怎么排窗口」。
+#    哪几个 Space 落在哪块物理屏幕上，由 macOS 调度中心里 Space 的实际排列决定，
+#    yabai 的 Space 编号是跨屏连续的（第一块屏占前 N 个，第二块屏接着往下排）。
+#    重接三屏后如果编号对不上，以 `yabai -m query --spaces` 的实际结果为准调整本文件。
+#
 # 踩坑，一定不要用;  yabai -m rule --add app='ChatGPT' space=3 这种方式添加注释规则，会导致yabai无法读取配置文件
 
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 # load scriping addition module
-sudo yabai --load-sa 
+sudo yabai --load-sa
 
 # 设置为浮动模式
 yabai -m config layout float
-yabai -m space 2 --layout stack
-yabai -m space 3 --layout stack
+
+# Space 1------通讯软件（走全局 float，跟单屏 Space 1 一致）
+
+# Space 2------空桌面，备用
+
+# Space 3------空桌面，备用
 
 # Space 4------Notes
+# 三屏独有的 space，单屏没有对应项；Notes 可能开多窗口，用 stack 稳妥
 yabai -m space 4 --layout stack
 
-# Space 5------文献整理PPT
-yabai -m space 5 --layout stack
+# Space 5------文献整理PPT + 终端（float，跟单屏 Space 4 一致）
+yabai -m space 5 --layout float
 
-# Space 6------邮件
-yabai -m space 6 --layout stack
+# Space 6------邮件（bsp，跟单屏 Space 9 一致）
+yabai -m space 6 --layout bsp
 
-# Space 7------音乐
-yabai -m space 7 --layout stack
+# Space 7------音乐（走全局 float，跟单屏 Space 8 一致）
 
-# Space 8------其他
-yabai -m space 8 --layout stack
+# Space 8------其他（走全局 float，跟单屏 Space 10 一致）
 
 # Space 9------浏览器
-yabai -m space 9 --layout stack
+# float 图个自由，跟单屏 Space 3 一致
+yabai -m space 9 --layout float
 
-# Space 10------AI 网页助手（Safari 等）
+# Space 10------AI 网页助手（stack，跟单屏 Space 2 一致）
 yabai -m space 10 --layout stack
 
 # Space 11------Local IDE
-yabai -m space 11 --layout bsp
-yabai -m config --space 11 split_ratio 0.6
-yabai -m config --space 11 split_type vertical
+# 用 stack 而非 float：这个 space 混着 Code/Cursor/Claude 多个 app，float 会触发
+# docs/float_zorder_bug.md 记录的 z-order 卡死（点击只改键盘焦点、视觉层级不动），
+# yabai v7.1.16 至今未修
+yabai -m space 11 --layout stack
 
 # Space 12------Moonshot DSW IDE + ChatGPT
-# ChatGPT 常驻后用 stack：bsp 会把它跟 IDE 平铺分屏，float 会触发
-# docs/float_zorder_bug.md 的 z-order 卡死，stack 叠放正好配 Cmd+Tab
+# ChatGPT 常驻这里后窗口不止一个，float 会触发 docs/float_zorder_bug.md 的
+# z-order 卡死（点击只改键盘焦点、视觉层级不动），所以用 stack
 yabai -m space 12 --layout stack
 
 # Space 13------PJLAB-Cluster IDE
-yabai -m space 13 --layout bsp
-yabai -m config --space 13 split_ratio 0.6
-yabai -m config --space 13 split_type vertical
+# 13 保持 float 图个自由：通常只有单个远程 IDE 窗口，卡死概率低；
+# 万一又卡住（点了切不过去），跑一轮 layout toggle 重置：
+#   yabai -m space 13 --layout bsp && sleep 0.3 && yabai -m space 13 --layout float
+yabai -m space 13 --layout float
 
 # 大坑就是不要用vscode自带的ctrl+/来在这个文件中注释，会导致yabai无法读取配置文件
 # 使用事件监听和规则实现窗口管理
@@ -59,7 +82,6 @@ yabai -m rule --add app="Feishu" space=1
 yabai -m rule --add app="WeCom" space=1
 yabai -m rule --add app="Discord" space=1
 yabai -m rule --add app='Calendar' title="Calendar" space=1
-yabai -m rule --add app="Activity Monitor" space=1
 
 # Space 2------空桌面，备用
 
@@ -68,12 +90,17 @@ yabai -m rule --add app="Activity Monitor" space=1
 # Space 4------Notes
 yabai -m rule --add app='Notes' space=4
 
-# Space 5------文献整理PPT
+# Space 5------文献整理PPT + 终端
 yabai -m rule --add app='Microsoft PowerPoint' space=5
 yabai -m rule --add app='Acrobat' space=5
 yabai -m rule --add app='Books' space=5
 yabai -m rule --add app='Goodnotes' space=5
 yabai -m rule --add app='Preview' title=".*pdf.*" space=5
+yabai -m rule --add app='PDF Expert' space=5
+yabai -m rule --add app='Zotero' space=5
+yabai -m rule --add app='Termius' space=5
+# iTerm2 跟 Termius 挤在同一终端区，Ctrl+T 三屏也是切到 Space 5
+yabai -m rule --add app='iTerm2' space=5
 
 # Space 6------邮件
 yabai -m rule --add app="Microsoft Outlook" space=6
@@ -85,6 +112,7 @@ yabai -m rule --add app="NetEaseMusic" space=7
 
 # Space 8------其他
 yabai -m rule --add app="Clash for Windows" space=8
+yabai -m rule --add app="Clash Verge" space=8
 yabai -m rule --add app="ToDesk" space=8
 yabai -m rule --add app="Appium Inspector" space=8
 yabai -m rule --add app="Logi Options+" space=8
@@ -94,10 +122,11 @@ yabai -m rule --add app="learnX" space=8
 yabai -m rule --add app="vncviewer" space=8
 yabai -m rule --add app="VNC Viewer" space=8
 yabai -m rule --add app="Longshot" space=8
+yabai -m rule --add app="Activity Monitor" space=8
+yabai -m rule --add app="Screen Sharing" space=8
 
-# Space 9------浏览器 & PDF Expert（包含飞书云文档）
+# Space 9------浏览器（包含飞书云文档）
 yabai -m rule --add app="Google Chrome" space=9
-yabai -m rule --add app="PDF Expert" space=9
 
 # Space 10------AI 网页助手（ChatGPT 桌面版已挪去 Space 12，方便 Cmd+Tab 直达 IDE 区）
 yabai -m rule --add app='Safari' space=10
@@ -105,8 +134,12 @@ yabai -m rule --add app='智谱清言' space=10
 yabai -m rule --add app='Yuanbao' space=10
 
 # Space 11------Local IDE
+# 注意：下面这条 title=".*" 是兜底规则，必须写在 Space 12/13 的具体 title 规则之前，
+# 否则会把 Moonshot / Cluster 的窗口一起抢过来
 yabai -m rule --add app='Code' title=".*" space=11
 yabai -m rule --add app='Cursor' title=".*" space=11
+# Claude 桌面版（AI coding 助手）跟第一个 IDE 待一起
+yabai -m rule --add app='Claude' space=11
 
 # Space 12------Moonshot DSW IDE & PETPA Project + ChatGPT
 yabai -m rule --add app='Code' title=".*[mM][23].*" space=12

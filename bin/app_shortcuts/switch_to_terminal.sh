@@ -16,9 +16,9 @@ if [ "$num_displays" -eq 1 ]; then
 elif [ "$num_displays" -eq 2 ]; then
     target_desktop=4  # 双显示器：同单屏，Termius/iTerm2 跟 PPT/PDF/Zotero 共用 Space 4
 elif [ "$num_displays" -eq 3 ]; then
-    target_desktop=1  # 三显示器：通讯 space（triple 暂未给 Termius 设规则）
+    target_desktop=5  # 三显示器：同单屏，Termius/iTerm2 跟 PPT/PDF/Zotero 共用 Space 5
 else
-    target_desktop=1
+    target_desktop=5
 fi
 
 # 调用提取的函数来处理桌面切换逻辑

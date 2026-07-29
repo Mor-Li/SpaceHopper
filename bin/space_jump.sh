@@ -10,14 +10,15 @@ source "$SPACEHOPPER_HOME/lib/core.sh"
 num_displays=$(yabai -m query --displays | jq '. | length')
 
 # 根据显示器数量定义目标桌面编号
+# 三种模式下都跳「AI 网页助手」space，只是编号不同
 if [ "$num_displays" -eq 1 ]; then
-    target_desktop=2  # 示例，针对单显示器的设定
+    target_desktop=2  # 单显示器：AI 网页助手
 elif [ "$num_displays" -eq 2 ]; then
-    target_desktop=2  # 示例，针对双显示器的设定
+    target_desktop=2  # 双显示器：AI 网页助手
 elif [ "$num_displays" -eq 3 ]; then
-    target_desktop=12  # 示例，针对三显示器的设定
+    target_desktop=10  # 三显示器：AI 网页助手（三屏把它排在 Space 10）
 else
-    target_desktop=2  # 示例，针对更多显示器的设定
+    target_desktop=2  # 更多显示器：AI 网页助手
 fi
 
 # 调用提取的函数来处理桌面切换逻辑
