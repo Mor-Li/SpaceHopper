@@ -1,7 +1,10 @@
 #!/bin/zsh
 
-# 定义记录文件的位置
-last_vscode_desktop_file="/tmp/last_vscode_desktop"
+# 定义记录文件的位置：按显示器数量分开存
+# 同一个数字在不同模式下指的是完全不同的桌面（5 在单屏是本地 IDE，在双屏是邮件），
+# 共用一个文件的话，插拔一次外接屏 Ctrl+V 就会跳到风马牛不相及的桌面
+num_displays=$(yabai -m query --displays | jq '. | length')
+last_vscode_desktop_file="/tmp/last_vscode_desktop_${num_displays}"
 
 # 获取要记录的桌面编号
 # core.sh 是在「离开当前桌面之前」source 本脚本的，那时它已经算好 current_space，直接复用省一次 query；

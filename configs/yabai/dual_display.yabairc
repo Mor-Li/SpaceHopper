@@ -1,48 +1,75 @@
 # ~/.yabairc
 # 配置yabai基础设置
-# 双屏模式：主屏幕10个屏幕，副屏幕5个屏幕（11-15）
+# 双屏模式：主屏（MacBook）Space 1-8，副屏（外接大屏）Space 9-12
+#
+# 设计原则：双屏 = 单屏，只是把「浏览器 + 三个 IDE」这四个主力 Space 搬到大屏上。
+# Space 的用途和 layout 全部照抄 single_display.yabairc，对应关系：
+#
+#   主屏 1 通讯      ← 单屏 1          副屏 9  浏览器       ← 单屏 3
+#   主屏 2 AI 网页   ← 单屏 2          副屏 10 本地 IDE     ← 单屏 5
+#   主屏 3 Notes     ← 双屏独有        副屏 11 Moonshot     ← 单屏 6
+#   主屏 4 PPT/终端  ← 单屏 4          副屏 12 Cluster      ← 单屏 7
+#   主屏 5 邮件      ← 单屏 9
+#   主屏 6 音乐      ← 单屏 8
+#   主屏 7 其他      ← 单屏 10
+#   主屏 8 备用（空）
+#
+# ⚠️ 副屏必须保持 4 个桌面（Space 9-12）。少一个的话 Space 12 那几行规则会整行失效，
+#    Cluster IDE 就没家了。
 
 
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 # load scriping addition module
-sudo yabai --load-sa 
+sudo yabai --load-sa
 
 # 设置为浮动模式
 yabai -m config layout float
+
+# ==================== 主屏 display 1：Space 1-8 ====================
+
+# Space 1------通讯软件（走全局 float，跟单屏 Space 1 一致）
+
+# Space 2------AI 网页助手
 yabai -m space 2 --layout stack
 
 # Space 3------Notes
+# 双屏独有的 space，单屏没有对应项；Notes 可能开多窗口，用 stack 稳妥
 yabai -m space 3 --layout stack
 
-# Space 4------文献整理PPT
-yabai -m space 4 --layout stack
+# Space 4------文献整理PPT + 终端（float，跟单屏 Space 4 一致）
+yabai -m space 4 --layout float
 
-# Space 5------邮件
-yabai -m space 5 --layout stack
+# Space 5------邮件（bsp，跟单屏 Space 9 一致）
+yabai -m space 5 --layout bsp
 
-# Space 6------音乐
-yabai -m space 6 --layout stack
+# Space 6------音乐（走全局 float，跟单屏 Space 8 一致）
 
-# Space 7------其他
-yabai -m space 7 --layout stack
+# Space 7------其他（走全局 float，跟单屏 Space 10 一致）
 
-# Space 8------Local IDE
-yabai -m space 8 --layout bsp
-yabai -m config --space 8 split_ratio 0.6
-yabai -m config --space 8 split_type vertical
+# Space 8------备用空桌面（本地 IDE 已挪去副屏 Space 10）
+
+# ==================== 副屏 display 2：Space 9-12 ====================
 
 # Space 9------浏览器
-yabai -m space 9 --layout stack
+# float 图个自由，跟单屏 Space 3 一致
+yabai -m space 9 --layout float
 
-# Space 10------Moonshot DSW IDE + ChatGPT
-# ChatGPT 常驻后用 stack：bsp 会把它跟 IDE 平铺分屏，float 会触发
-# docs/float_zorder_bug.md 的 z-order 卡死，stack 叠放正好配 Cmd+Tab
+# Space 10------本地 IDE
+# 用 stack 而非 float：这个 space 混着 Code/Cursor/Claude 多个 app，float 会触发
+# docs/float_zorder_bug.md 记录的 z-order 卡死（点击只改键盘焦点、视觉层级不动），
+# yabai v7.1.16 至今未修
 yabai -m space 10 --layout stack
 
-# Space 11------PJLAB-Cluster IDE
-yabai -m space 11 --layout bsp
-yabai -m config --space 11 split_ratio 0.6
-yabai -m config --space 11 split_type vertical
+# Space 11------Moonshot DSW IDE + ChatGPT
+# ChatGPT 常驻这里后窗口不止一个，float 会触发 docs/float_zorder_bug.md 的
+# z-order 卡死（点击只改键盘焦点、视觉层级不动），所以用 stack
+yabai -m space 11 --layout stack
+
+# Space 12------PJLAB-Cluster IDE
+# 12 保持 float 图个自由：通常只有单个远程 IDE 窗口，卡死概率低；
+# 万一又卡住（点了切不过去），跑一轮 layout toggle 重置：
+#   yabai -m space 12 --layout bsp && sleep 0.3 && yabai -m space 12 --layout float
+yabai -m space 12 --layout float
 
 # 大坑就是不要用vscode自带的ctrl+/来在这个文件中注释，会导致yabai无法读取配置文件
 # 使用事件监听和规则实现窗口管理
@@ -55,9 +82,8 @@ yabai -m rule --add app="Feishu" space=1
 yabai -m rule --add app="WeCom" space=1
 yabai -m rule --add app="Discord" space=1
 yabai -m rule --add app='Calendar' title="Calendar" space=1
-yabai -m rule --add app="Activity Monitor" space=1
 
-# Space 2------AI 网页助手（ChatGPT 桌面版已挪去 Space 10，方便 Cmd+Tab 直达 IDE 区）
+# Space 2------AI 网页助手（ChatGPT 桌面版已挪去 Space 11，方便 Cmd+Tab 直达 IDE 区）
 yabai -m rule --add app='Safari' space=2
 yabai -m rule --add app='智谱清言' space=2
 yabai -m rule --add app='Yuanbao' space=2
@@ -65,13 +91,17 @@ yabai -m rule --add app='Yuanbao' space=2
 # Space 3------Notes
 yabai -m rule --add app='Notes' space=3
 
-# Space 4------文献整理PPT
+# Space 4------文献整理PPT + 终端
 yabai -m rule --add app='Microsoft PowerPoint' space=4
 yabai -m rule --add app='Acrobat' space=4
 yabai -m rule --add app='Books' space=4
 yabai -m rule --add app='Goodnotes' space=4
 yabai -m rule --add app='Preview' title=".*pdf.*" space=4
+yabai -m rule --add app='PDF Expert' space=4
 yabai -m rule --add app='Zotero' space=4
+yabai -m rule --add app='Termius' space=4
+# iTerm2 跟 Termius 挤在同一终端区，Ctrl+T 双屏也是切到 Space 4
+yabai -m rule --add app='iTerm2' space=4
 
 # Space 5------邮件
 yabai -m rule --add app="Microsoft Outlook" space=5
@@ -83,6 +113,7 @@ yabai -m rule --add app="NetEaseMusic" space=6
 
 # Space 7------其他
 yabai -m rule --add app="Clash for Windows" space=7
+yabai -m rule --add app="Clash Verge" space=7
 yabai -m rule --add app="ToDesk" space=7
 yabai -m rule --add app="Appium Inspector" space=7
 yabai -m rule --add app="Logi Options+" space=7
@@ -92,28 +123,35 @@ yabai -m rule --add app="learnX" space=7
 yabai -m rule --add app="vncviewer" space=7
 yabai -m rule --add app="VNC Viewer" space=7
 yabai -m rule --add app="Longshot" space=7
+yabai -m rule --add app="Activity Monitor" space=7
+yabai -m rule --add app="Screen Sharing" space=7
 
-# Space 8------Local IDE
-yabai -m rule --add app='Code' title=".*" space=8
-yabai -m rule --add app='Cursor' title=".*" space=8
+# Space 8------备用空桌面，暂不分配任何 app
 
-# Space 9------浏览器 & PDF Expert（包含飞书云文档）
+# Space 9------浏览器（包含飞书云文档）
 yabai -m rule --add app="Google Chrome" space=9
-yabai -m rule --add app="PDF Expert" space=9
 
-# Space 10------Moonshot DSW IDE + ChatGPT
-yabai -m rule --add app='Code' title=".*[mM][23].*" space=10
-yabai -m rule --add app='Cursor' title=".*[mM][23].*" space=10
-yabai -m rule --add app='Cursor' title=".*[kK][1].*" space=10
-# ChatGPT 固定住 Space 10，Cmd+Tab 切到它时系统自动跳过来
-yabai -m rule --add app='ChatGPT' space=10
+# Space 10------本地 IDE
+# 注意：下面这条 title=".*" 是兜底规则，必须写在 Space 11/12 的具体 title 规则之前，
+# 否则会把 Moonshot / Cluster 的窗口一起抢过来
+yabai -m rule --add app='Code' title=".*" space=10
+yabai -m rule --add app='Cursor' title=".*" space=10
+# Claude 桌面版（AI coding 助手）跟第一个 IDE 待一起
+yabai -m rule --add app='Claude' space=10
 
-# Space 11------PJLAB-Cluster IDE
-yabai -m rule --add app='Code' title=".*Cluster.*" space=11
-yabai -m rule --add app='Cursor' title=".*Cluster.*" space=11
-yabai -m rule --add app='Code' title=".*volcano.*" space=11
-yabai -m rule --add app='Cursor' title=".*volcano.*" space=11
-yabai -m rule --add app='Cursor' title=".*[bB][0].*" space=11
+# Space 11------Moonshot DSW IDE + ChatGPT
+yabai -m rule --add app='Code' title=".*[mM][23].*" space=11
+yabai -m rule --add app='Cursor' title=".*[mM][23].*" space=11
+yabai -m rule --add app='Cursor' title=".*[kK][1].*" space=11
+# ChatGPT 固定住 Space 11，Cmd+Tab 切到它时系统自动跳过来
+yabai -m rule --add app='ChatGPT' space=11
+
+# Space 12------PJLAB-Cluster IDE
+yabai -m rule --add app='Code' title=".*Cluster.*" space=12
+yabai -m rule --add app='Cursor' title=".*Cluster.*" space=12
+yabai -m rule --add app='Code' title=".*volcano.*" space=12
+yabai -m rule --add app='Cursor' title=".*volcano.*" space=12
+yabai -m rule --add app='Cursor' title=".*[bB][0].*" space=12
 
 
 yabai -m rule --apply

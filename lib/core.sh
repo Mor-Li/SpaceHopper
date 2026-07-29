@@ -36,7 +36,11 @@ switch_to_target_desktop() {
         echo "Debug: Switching from space $current_space to space $target_desktop."
 
         # ✅ 关键优化：在离开当前桌面前，如果当前是 VSCode 桌面，先记录
-        if [[ "$current_space" =~ ^(5|6|7|8|10|11|12|13)$ ]]; then
+        # 下面是三种显示器模式下 IDE 桌面编号的并集（单屏 5/6/7、双屏 10/11/12、三屏 11/12/13），
+        # 只是一道省开销的粗筛：命中了才去 source tracker 多跑一次 yabai query。
+        # 编号在不同模式下语义不同（比如单屏 10 是「其他」），但 vscode_tracker.sh 内部会再数一遍
+        # 该桌面有没有 Code/Cursor 窗口，没有就不记录，所以粗筛放宽只会白跑查询，不会记错桌面。
+        if [[ "$current_space" =~ ^(5|6|7|10|11|12|13)$ ]]; then
             source "$SPACEHOPPER_HOME/lib/vscode_tracker.sh" 2>/dev/null
         fi
 
