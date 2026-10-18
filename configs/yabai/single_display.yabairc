@@ -15,13 +15,13 @@ yabai -m space 3 --layout float
 # Space 4------自由布局与文献整理PPT
 yabai -m space 4 --layout float
 
-# Space 5------Local IDE
-# 用 stack 而非 float：这个 space 混着 Code/Cursor/Claude 多个 app，float 会触发
+# Space 5------Local IDE + Claude + ChatGPT
+# 用 stack 而非 float：这个 space 混着 Code/Cursor/Claude/ChatGPT 多个 app，float 会触发
 # docs/float_zorder_bug.md 记录的 z-order 卡死（点击只改键盘焦点、视觉层级不动），
 # yabai v7.1.16 至今未修
 yabai -m space 5 --layout stack
-# Space 6------Moonshot DSW IDE + ChatGPT
-# ChatGPT 常驻这里后窗口不止一个，float 会触发 docs/float_zorder_bug.md 的
+# Space 6------Moonshot DSW IDE
+# 远程 IDE 窗口常有好几个，float 会触发 docs/float_zorder_bug.md 的
 # z-order 卡死（点击只改键盘焦点、视觉层级不动），所以用 stack
 yabai -m space 6 --layout stack
 # Space 7------PJLAB-Cluster IDE
@@ -45,7 +45,7 @@ yabai -m rule --add app="WeCom" space=1
 yabai -m rule --add app="Discord" space=1
 yabai -m rule --add app='Calendar' title="Calendar" space=1
 
-# Space 2------AI 网页助手（ChatGPT 桌面版已挪去 Space 6，方便 Cmd+Tab 直达 IDE 区）
+# Space 2------AI 网页助手（ChatGPT 桌面版跟 Claude 一起放在 Space 5）
 yabai -m rule --add app='Safari' space=2
 yabai -m rule --add app='智谱清言' space=2
 yabai -m rule --add app='Yuanbao' space=2
@@ -71,13 +71,13 @@ yabai -m rule --add app='Code' title=".*" space=5
 yabai -m rule --add app='Cursor' title=".*" space=5
 # Claude 桌面版（AI coding 助手）跟第一个 IDE 待一起
 yabai -m rule --add app='Claude' space=5
+# ChatGPT 跟 Claude 放一起，Cmd+Tab 切到它时系统自动跳过来
+yabai -m rule --add app='ChatGPT' space=5
 
-# Space 6------Moonshot DSW IDE + ChatGPT
+# Space 6------Moonshot DSW IDE
 yabai -m rule --add app='Code' title=".*[mM][23].*" space=6
 yabai -m rule --add app='Cursor' title=".*[mM][23].*" space=6
 yabai -m rule --add app='Cursor' title=".*[kK][1].*" space=6
-# ChatGPT 固定住 Space 6，Cmd+Tab 切到它时系统自动跳过来
-yabai -m rule --add app='ChatGPT' space=6
 
 # Space 7------PJLAB-Cluster IDE
 yabai -m rule --add app='Code' title=".*Cluster.*" space=7
