@@ -7,7 +7,7 @@
 #
 #   主屏 1 通讯      ← 单屏 1          副屏 9  浏览器       ← 单屏 3
 #   主屏 2 AI 网页   ← 单屏 2          副屏 10 本地 IDE     ← 单屏 5
-#   主屏 3 Notes     ← 双屏独有        副屏 11 Moonshot     ← 单屏 6
+#   主屏 3 AI 助手   ← 双屏独有        副屏 11 Moonshot     ← 单屏 6
 #   主屏 4 PPT/终端  ← 单屏 4          副屏 12 Cluster      ← 单屏 7
 #   主屏 5 邮件      ← 单屏 9
 #   主屏 6 音乐      ← 单屏 8
@@ -32,8 +32,9 @@ yabai -m config layout float
 # Space 2------AI 网页助手
 yabai -m space 2 --layout stack
 
-# Space 3------Notes
-# 双屏独有的 space，单屏没有对应项；Notes 可能开多窗口，用 stack 稳妥
+# Space 3------Claude + ChatGPT + Notes
+# 双屏独有的 space，单屏没有对应项；混着好几个 app，float 会触发
+# docs/float_zorder_bug.md 的 z-order 卡死，用 stack 稳妥
 yabai -m space 3 --layout stack
 
 # Space 4------文献整理PPT + 终端（float，跟单屏 Space 4 一致）
@@ -54,8 +55,8 @@ yabai -m space 5 --layout bsp
 # float 图个自由，跟单屏 Space 3 一致
 yabai -m space 9 --layout float
 
-# Space 10------本地 IDE + Claude + ChatGPT
-# 用 stack 而非 float：这个 space 混着 Code/Cursor/Claude/ChatGPT 多个 app，float 会触发
+# Space 10------本地 IDE
+# 用 stack 而非 float：这个 space 常混着 Code/Cursor 多个窗口，float 会触发
 # docs/float_zorder_bug.md 记录的 z-order 卡死（点击只改键盘焦点、视觉层级不动），
 # yabai v7.1.16 至今未修
 yabai -m space 10 --layout stack
@@ -83,12 +84,15 @@ yabai -m rule --add app="WeCom" space=1
 yabai -m rule --add app="Discord" space=1
 yabai -m rule --add app='Calendar' title="Calendar" space=1
 
-# Space 2------AI 网页助手（ChatGPT 桌面版跟 Claude 一起放在副屏 Space 10）
+# Space 2------AI 网页助手（ChatGPT 桌面版跟 Claude 一起放在主屏 Space 3）
 yabai -m rule --add app='Safari' space=2
 yabai -m rule --add app='智谱清言' space=2
 yabai -m rule --add app='Yuanbao' space=2
 
-# Space 3------Notes
+# Space 3------Claude + ChatGPT + Notes
+# Claude 桌面版和 ChatGPT 放一起，Cmd+Tab 切到它们时系统自动跳过来
+yabai -m rule --add app='Claude' space=3
+yabai -m rule --add app='ChatGPT' space=3
 yabai -m rule --add app='Notes' space=3
 
 # Space 4------文献整理PPT + 终端
@@ -136,10 +140,6 @@ yabai -m rule --add app="Google Chrome" space=9
 # 否则会把 Moonshot / Cluster 的窗口一起抢过来
 yabai -m rule --add app='Code' title=".*" space=10
 yabai -m rule --add app='Cursor' title=".*" space=10
-# Claude 桌面版（AI coding 助手）跟第一个 IDE 待一起
-yabai -m rule --add app='Claude' space=10
-# ChatGPT 跟 Claude 放一起，Cmd+Tab 切到它时系统自动跳过来
-yabai -m rule --add app='ChatGPT' space=10
 
 # Space 11------Moonshot DSW IDE
 yabai -m rule --add app='Code' title=".*[mM][23].*" space=11
