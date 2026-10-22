@@ -92,8 +92,9 @@ yabai -m rule --add app="QQ音乐" space=8
 yabai -m rule --add app="汽水音乐" space=8
 yabai -m rule --add app="NetEaseMusic" space=8
 
-# Space 9------邮件
+# Space 9------邮件（Outlook + 系统自带 Mail）
 yabai -m rule --add app="Microsoft Outlook" space=9
+yabai -m rule --add app="^Mail$" space=9
 
 # Space 10------其他
 yabai -m rule --add app="Clash for Windows" space=10

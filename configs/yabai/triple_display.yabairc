@@ -102,8 +102,9 @@ yabai -m rule --add app='Termius' space=5
 # iTerm2 跟 Termius 挤在同一终端区，Ctrl+T 三屏也是切到 Space 5
 yabai -m rule --add app='iTerm2' space=5
 
-# Space 6------邮件
+# Space 6------邮件（Outlook + 系统自带 Mail）
 yabai -m rule --add app="Microsoft Outlook" space=6
+yabai -m rule --add app="^Mail$" space=6
 
 # Space 7------音乐
 yabai -m rule --add app="QQ音乐" space=7
