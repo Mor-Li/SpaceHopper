@@ -4,7 +4,6 @@
 
 
 ctrl + alt + cmd - r : zsh -i -c "yabai --restart-service"
-ctrl + alt + cmd - s : zsh -i -c "switch_yabai_config"
 ctrl + alt + cmd - a : zsh -i -c "reconnect_ap"
 ctrl + alt + cmd - t : open -a Terminal
 

@@ -3,7 +3,7 @@
 #
 # 两种用法：
 #   1. 自动：三份 yabairc 都挂了 display_added / display_removed 信号，插拔显示器时 yabai 自己调本脚本
-#   2. 手动：zsh 函数 switch_yabai_config（Ctrl+Alt+Cmd+S）带 --force 调本脚本，配置没变也照样重启
+#   2. 手动：终端里敲 switch_yabai_config，带 --force 调本脚本，配置没变也照样重启
 #
 # 自动模式下 ~/.yabairc 已经是对的配置就什么都不做，所以显示器休眠唤醒这类抖动不会反复重启 yabai。
 # 日志：/tmp/spacehopper_switch_config.log
