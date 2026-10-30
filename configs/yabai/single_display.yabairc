@@ -3,6 +3,11 @@
 
 # load scriping addition module
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
+# 插拔显示器时自动换成对应屏数的 yabairc（屏数没变就什么都不做），见 bin/switch_yabai_config.sh
+yabai -m signal --add event=display_added action="/Users/limo/Documents/GithubRepo/SpaceHopper/bin/switch_yabai_config.sh" label=auto_switch_config_added
+yabai -m signal --add event=display_removed action="/Users/limo/Documents/GithubRepo/SpaceHopper/bin/switch_yabai_config.sh" label=auto_switch_config_removed
+
 sudo yabai --load-sa 
 
 # 设置为浮动模式
